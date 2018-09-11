@@ -13,7 +13,8 @@ steps:
     cmd: hello-world-func-test
     env: test-target=hello-world
   # push hello-world if func-tests are successful  
-  - push: {{.Run.Registry}}/hello-world:{{.Run.ID}}
+  - push: 
+    - {{.Run.Registry}}/hello-world:{{.Run.ID}}
   # helm deploy the updated hello-world image
   - cmd: |
     cmd.azurecr.io/helm:2 update helloworld ./release/helm/ 
