@@ -1,28 +1,30 @@
-# Project Name
-A collection examples for [ACR Tasks](https://aka.ms/acr/tasks)
+# ACR Tasks samples
+
+A collection example `task.yaml` files for [ACR Tasks](https://aka.ms/acr/tasks).
 
 ## Features
 
-This project framework provides the following features:
+ACR Tasks, a feature of Azure Container Registry, provides the following features:
 
-* Cloud based container builds, for inner-loop (pre-commit)
-* Automated container builds based on git-commits
-* Automated contaienr builds for base image updates, supporting OS & Framework patching
+* Cloud-based container builds, for inner-loop (pre-commit)
+* Automated container builds based on Git commits
+* Automated container builds for base image updates, supporting OS and framework patching
 
 ## Getting Started
-See [ACR Tasks](https://aka.ms/acr/tasks) for waslkthroughs and overviews that utilize these samples.
+
+See [ACR Tasks](https://aka.ms/acr/tasks) for walk-throughs and overviews that utilize these samples.
 
 ### Prerequisites
 
-- [az cli](https://docs.microsoft.com/cli/azure/install-azure-cli?view=azure-cli-latest)
+To use these sample tasks, you need the Azure CLI:
 
+* [Install the Azure CLI](https://docs.microsoft.com/cli/azure/install-azure-cli)
 
 ### Quickstart
-See [ACR Tasks](https://aka.ms/acr/tasks) for waslkthroughs and overviews that utilize these samples.
+
+See [ACR Tasks](https://aka.ms/acr/tasks) for walk-throughs and overviews that use these samples.
 
 ## Resources
 
-(Any additional resources or related projects)
-
-- [ACR Build](https://aka.ms/acr/build) for single step container builds
-- [ACR Tasks](https://aka.ms/acr/tasks) for waslkthroughs and overviews that utilize these samples.
+* [ACR Build](https://aka.ms/acr/build) for single step container builds
+* [ACR Tasks](https://aka.ms/acr/tasks) for walk-throughs and overviews that use these samples.
