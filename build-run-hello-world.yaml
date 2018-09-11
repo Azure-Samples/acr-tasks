@@ -1,8 +1,6 @@
 version: 1.0-preview-1
 steps:
   - build: -t {{.Run.Registry}}/hello-world:{{.Run.ID}} -f hello-world.dockerfile .
-  # push primitive not yet supported
-  # - push: {{.Run.Registry}}/hello-world:{{.Run.ID}}
-  # use cmd to run the docker push
-  - cmd: docker push {{.Run.Registry}}/hello-world:{{.Run.ID}}
+  - push:
+    - {{.Run.Registry}}/hello-world:{{.Run.ID}}
   - cmd: {{.Run.Registry}}/hello-world:{{.Run.ID}}

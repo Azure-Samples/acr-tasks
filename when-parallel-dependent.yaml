@@ -17,5 +17,5 @@ steps:
     env: TEST_TARGET_URL=hello-world
     when: ["hello-world"]
   # push hello-world if func-tests are successful  
-  - push: {{.Run.Registry}}/hello-world:{{.Run.ID}}
+  - push: ["{{.Run.Registry}}/hello-world:{{.Run.ID}}"]
     when: ["func-tests"]
