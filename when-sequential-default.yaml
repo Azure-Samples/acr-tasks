@@ -1,0 +1,5 @@
+version: 1.0-preview-1
+steps:
+    - cmd: bash echo one
+    - cmd: bash echo two
+    - cmd: bash echo three

@@ -1,0 +1,10 @@
+version: 1.0-preview-1
+steps:
+    - id: step1
+      cmd: bash echo one
+    - id: step2
+      cmd: bash echo two
+      when: ["step1"]
+    - id: step3
+      cmd: bash echo three
+      when: ["step2"]
