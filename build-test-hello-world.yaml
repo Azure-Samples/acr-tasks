@@ -5,7 +5,7 @@ steps:
     build: -t {{.Run.Registry}}/hello-world:{{.Run.ID}} -f hello-world.dockerfile .
     when: ["-"]
   - id: build-hello-world-test
-    build: -t hello-world-test  -f hello-world.dockerfile .
+    build: -t hello-world-test:{{.Run.ID}}  -f hello-world.dockerfile .
     when: ["-"]
   # run built images to be tested
   - id: hello-world
@@ -14,9 +14,7 @@ steps:
       - 8080:80
     when: ["build-hello-world"]
   - id: func-tests
-    cmd: hello-world-func-test
+    cmd: hello-world-func-test:{{.Run.ID}}
     env:
       - TEST_TARGET_URL=hello-world
-    when:
-      - hello-world
-      - build-hello-world-test
+    when: ["hello-world"]
