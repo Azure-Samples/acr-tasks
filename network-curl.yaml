@@ -5,6 +5,9 @@ steps:
     ports: 
       - "8000:80"
     detach: true
+  # referencing the id: is what should work, but we have a bug, so using localhost, 
+  # setting the netowrk: host unblocks us for now
+  # - cmd: cmd.azurecr-test.io/wget http://nginx:8000
   - cmd: cmd.azurecr-test.io/wget http://localhost:8000
     network: host
   - cmd: cmd.azurecr-test.io/curl --url http://localhost:8000
