@@ -11,7 +11,7 @@ steps:
   - id: hello-world
     cmd: {{.Run.Registry}}/hello-world:{{.Run.ID}}
     ports:
-      - 80:80
+      - 8080:80
     when: ["build-hello-world"]
   - id: func-tests
     cmd: hello-world-func-test
