@@ -17,4 +17,6 @@ steps:
     cmd: hello-world-func-test
     env:
       - TEST_TARGET_URL=hello-world
-    when: ["hello-world"]
+    when:
+      - hello-world
+      - build-hello-world-test
