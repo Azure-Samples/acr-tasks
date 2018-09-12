@@ -5,7 +5,7 @@ steps:
     build: -t {{.Run.Registry}}/hello-world:{{.Run.ID}} -f hello-world.dockerfile .
     when: ["-"]
   - id: build-hello-world-test
-    build: -t hello-world-test .
+    build: -t hello-world-test  -f hello-world.dockerfile .
     when: ["-"]
   # run built images to be tested
   - id: hello-world
