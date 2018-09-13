@@ -8,7 +8,6 @@ steps:
   # run built images to be tested
   - id: hello-world
     cmd: {{.Run.Registry}}/hello-world:{{.Run.ID}}
-    ports: 80:80
   - id: func-tests
     cmd: hello-world-func-test
     env: test-target=hello-world
@@ -16,7 +15,7 @@ steps:
   - push: 
     - {{.Run.Registry}}/hello-world:{{.Run.ID}}
   # helm deploy the updated hello-world image
-  - cmd: |
-    cmd.azurecr.io/helm:2 update helloworld ./release/helm/ 
-    --reuse-values 
-    --set helloworld.image={{.Run.Registry}}/hello-world:{{.Run.ID}}
+  - cmd: >
+      cmd.azurecr.io/helm:v2.11.0-rc.2 update helloworld ./release/helm/ 
+      --reuse-values 
+      --set helloworld.image={{.Run.Registry}}/hello-world:{{.Run.ID}}

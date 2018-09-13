@@ -2,10 +2,8 @@ version: 1.0-preview-1
 steps:
   - id: nginx
     cmd: nginx
-    ports: 
-      - "8000:80"
     detach: true
-  - cmd: cmd.azurecr-test.io/wget http://localhost:8000
+  - cmd: cmd.azurecr-test.io/wget http://nginx
     network: host
-  - cmd: cmd.azurecr-test.io/curl --url http://localhost:8000
+  - cmd: cmd.azurecr-test.io/curl --url http://nginx
     network: host
