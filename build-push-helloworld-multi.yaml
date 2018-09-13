@@ -1,0 +1,6 @@
+version: 1.0-preview-1
+steps:
+  - build: -t {{.Run.Registry}}/hello-world:{{.Run.ID}} -t {{.Run.Registry}}/hello-world:latest -f hello-world.dockerfile .
+  - push:
+    - {{.Run.Registry}}/hello-world:{{.Run.ID}}
+    - {{.Run.Registry}}/hello-world:latest
