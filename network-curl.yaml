@@ -4,4 +4,3 @@ steps:
     cmd: nginx
     detach: true
   - cmd: cmd.azurecr-test.io/curl --url http://nginx
-    network: host
