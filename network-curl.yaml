@@ -3,7 +3,5 @@ steps:
   - id: nginx
     cmd: nginx
     detach: true
-  - cmd: cmd.azurecr-test.io/wget http://nginx
-    network: host
   - cmd: cmd.azurecr-test.io/curl --url http://nginx
     network: host
