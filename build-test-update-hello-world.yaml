@@ -10,9 +10,10 @@ steps:
     cmd: {{.Run.Registry}}/hello-world:{{.Run.ID}}
   - id: func-tests
     cmd: hello-world-func-test
-    env: test-target=hello-world
-  # push hello-world if func-tests are successful  
-  - push: 
+    env:
+      - test-target=hello-world
+  # push hello-world if func-tests are successful
+  - push:
     - {{.Run.Registry}}/hello-world:{{.Run.ID}}
   # helm deploy the updated hello-world image
   - cmd: >
