@@ -12,7 +12,7 @@ steps:
     cmd: {{.Run.Registry}}/hello-world:{{.Run.ID}}
     when: ["build-hello-world"]
   - id: func-tests
-    cmd: hello-world-func-test
+    cmd: hello-world-test
     env: 
       - TEST_TARGET_URL=hello-world
     when: ["hello-world"]

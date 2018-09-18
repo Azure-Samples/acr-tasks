@@ -9,7 +9,7 @@ steps:
   - id: hello-world
     cmd: {{.Run.Registry}}/hello-world:{{.Run.ID}}
   - id: func-tests
-    cmd: hello-world-func-test
+    cmd: hello-world-test
     env:
       - test-target=hello-world
   # push hello-world if func-tests are successful  
