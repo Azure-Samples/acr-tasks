@@ -1,16 +1,17 @@
 version: 1.0-preview-1
 steps:
   # build website and func-test images, concurrently
-  - build: -t {{.Run.Registry}}/hello-world:{{.Run.ID}} .
+  - build: -t {{.Run.Registry}}/hello-world:{{.Run.ID}} -f hello-world.dockerfile .
     when: ["-"]
-  - build: -t hello-world-test .
+  - build: -t hello-world-test  -f hello-world.dockerfile  .
     when: ["-"]
   # run built images to be tested
   - id: hello-world
     cmd: {{.Run.Registry}}/hello-world:{{.Run.ID}}
   - id: func-tests
     cmd: hello-world-func-test
-    env: test-target=hello-world
+    env:
+      - test-target=hello-world
   # push hello-world if func-tests are successful  
   - push: 
     - {{.Run.Registry}}/hello-world:{{.Run.ID}}
