@@ -1,0 +1,16 @@
+version: v1.0.0
+secrets:
+  - id: name
+    keyvault: https://myvault.vault.azure.net/secrets/SampleSecret
+steps:
+  # echo secrets
+  - cmd: bash echo Secret name is {{.Secrets.name}}
+
+  # Build/Push the website to source registry
+  - cmd: docker build -t {{.Run.Registry}}/my-website:{{.Run.ID}} https://github.com/Azure-Samples/aci-helloworld.git
+  - push: 
+    - "{{.Run.Registry}}/my-website:{{.Run.ID}}"
+  
+  # Login to Azure and list the tags to verify if we have the Image!
+  - cmd: microsoft/azure-cli az login --identity
+  - cmd: microsoft/azure-cli az acr repository show-tags -n {{.Values.registryName}} --repository my-website
