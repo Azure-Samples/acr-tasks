@@ -4,9 +4,9 @@ secrets:
     keyvault: https://myacbvault2.vault.azure.net/secrets/SampleSecret
 steps:
   - id: resolve-secrets
-    cmd: bash -c 'echo "secret is $mySecret"'
-    #env:
-     # - mySecret={{.Secrets.name}}
+    cmd: bash -c 'echo "secret is $MY_SECRET"'
+    env:
+     - MY_SECRET={{.Secrets.name}}
 
   # Build/Push the website to source registry
   - cmd: docker build -t {{.Run.Registry}}/my-website:{{.Run.ID}} https://github.com/Azure-Samples/aci-helloworld.git
