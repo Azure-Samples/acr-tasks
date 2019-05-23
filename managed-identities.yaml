@@ -4,7 +4,7 @@ secrets:
     keyvault: https://myacbvault2.vault.azure.net/secrets/SampleSecret
 steps:
   - id: resolve-secrets
-    cmd: bash if [ -z "$mySecret" ]; then echo "secrets not resolved"; else echo "secret resolved"; fi
+    cmd: bash echo "$mySecret"
     env:
       - mySecret={{.Secrets.name}}
 
