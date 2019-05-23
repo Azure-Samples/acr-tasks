@@ -5,8 +5,8 @@ secrets:
 steps:
   - id: resolve-secrets
     cmd: bash -c 'echo "secret is $mySecret"'
-    env:
-      - mySecret={{.Secrets.name}}
+    #env:
+     # - mySecret={{.Secrets.name}}
 
   # Build/Push the website to source registry
   - cmd: docker build -t {{.Run.Registry}}/my-website:{{.Run.ID}} https://github.com/Azure-Samples/aci-helloworld.git
