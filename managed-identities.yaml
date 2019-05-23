@@ -3,7 +3,8 @@ secrets:
   - id: name
     keyvault: https://myacbvault2.vault.azure.net/secrets/SampleSecret
 steps:
-  - cmd: bash -c 'echo "secret is $MY_SECRET"'
+  - cmd: bash echo Secret name is {{.Secrets.name}}
+  - cmd: bash -c 'echo "secret is {{.Secrets.name}}"'
     env:
      - MY_SECRET={{.Secrets.name}}
 
