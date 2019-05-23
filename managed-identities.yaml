@@ -3,8 +3,11 @@ secrets:
   - id: name
     keyvault: https://myvault.vault.azure.net/secrets/SampleSecret
 steps:
-  # echo secrets
-  - cmd: bash echo Secret name is {{.Secrets.name}}
+  - id: resolve-secrets
+    cmd: |
+        bash if [ -z "$mySecret" ]; then echo "secrets not resolved"; else echo "secret resolved"; fi
+    env:
+      - mySecret={{.Secrets.name}}
 
   # Build/Push the website to source registry
   - cmd: docker build -t {{.Run.Registry}}/my-website:{{.Run.ID}} https://github.com/Azure-Samples/aci-helloworld.git
