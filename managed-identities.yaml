@@ -5,7 +5,7 @@ secrets:
 steps:
   - cmd: bash echo blah blah Secret name is {{.Secrets.name}}
   - cmd: bash -c 'echo "secret is $MY_SECRET"'
-    env: [ MY_SECRET={{.Secrets.name}} ]
+    env: [ MY_SECRET='{{.Secrets.name}}' ]
 
   # Build/Push the website to source registry
   - cmd: docker build -t {{.Run.Registry}}/my-website:{{.Run.ID}} https://github.com/Azure-Samples/aci-helloworld.git
