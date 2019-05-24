@@ -3,7 +3,7 @@
 
 ## Access to Azure KeyVault and `az login` using Managed Identity
 
-Task Definition [file](https://github.com/Azure-Samples/acr-tasks/blob/shahzzzam/msi/managed-identities.yaml) on GitHub.
+Task Definition [file](https://github.com/shahzzzam/acr-tasks/blob/master/managed-identities.yaml) on GitHub.
 (change this after PR is closed)
 
 Looks like this:
@@ -15,8 +15,9 @@ secrets:
   - id: name
     keyvault: https://myvault.vault.azure.net/secrets/SampleSecret
 steps:
-  # echo secrets
-  - cmd: bash echo Secret name is {{.Secrets.name}}
+  - cmd: bash -c 'if [ -z "$MY_SECRET" ]; then echo "Secret not resolved"; else echo "Secret resolved!!"; fi'
+    env: 
+      - MY_SECRET='{{.Secrets.name}}' 
 
   # Build/Push the website to source registry
   - cmd: docker build -t {{.Run.Registry}}/my-website:{{.Run.ID}} https://github.com/Azure-Samples/aci-helloworld.git
@@ -97,21 +98,21 @@ $az acr task create -n msitask -r $reg -c https://github.com/Azure-Samples/acr-t
 // Run Task
 $az acr task run -n msitask -r $reg --set registryName=$reg
 
-Queued a run with ID: cf3
+Queued a run with ID: cfs
 Waiting for an agent...
-2019/05/16 21:53:25 Downloading source code...
-2019/05/16 21:53:27 Finished downloading source code
-2019/05/16 21:53:28 Using acb_vol_7827c4c8-9d1c-418d-b110-f3a1f934235d as the home volume
-2019/05/16 21:53:30 Creating Docker network: acb_default_network, driver: 'bridge'
-2019/05/16 21:53:30 Successfully set up Docker network: acb_default_network
-2019/05/16 21:53:30 Setting up Docker configuration...
-2019/05/16 21:53:31 Successfully set up Docker configuration
-2019/05/16 21:53:31 Logging in to registry: myregistry.azurecr.io
-2019/05/16 21:53:32 Successfully logged into myregistry.azurecr.io
-2019/05/16 21:53:32 Executing step ID: acb_step_0. Working directory: 'ManagedIdentities', Network: 'acb_default_network'
-2019/05/16 21:53:32 Launching container with name: acb_step_0
-Secret name is New Secret
-2019/05/16 21:53:33 Successfully executed container: acb_step_0
+2019/05/24 00:09:32 Downloading source code...
+2019/05/24 00:09:34 Finished downloading source code
+2019/05/24 00:09:35 Using acb_vol_d7fc66dc-7ad4-473c-916a-16c8c074afa3 as the home volume
+2019/05/24 00:09:37 Creating Docker network: acb_default_network, driver: 'bridge'
+2019/05/24 00:09:38 Successfully set up Docker network: acb_default_network
+2019/05/24 00:09:38 Setting up Docker configuration...
+2019/05/24 00:09:39 Successfully set up Docker configuration
+2019/05/24 00:09:39 Logging in to registry: samashahtesting.azurecr.io
+2019/05/24 00:09:39 Successfully logged into samashahtesting.azurecr.io
+2019/05/24 00:09:39 Executing step ID: acb_step_0. Working directory: '', Network: 'acb_default_network'
+2019/05/24 00:09:39 Launching container with name: acb_step_0
+Secret resolved!!
+2019/05/24 00:09:41 Successfully executed container: acb_step_0
 2019/05/16 21:53:33 Executing step ID: acb_step_1. Working directory: 'ManagedIdentities', Network: 'acb_default_network'
 2019/05/16 21:53:33 Launching container with name: acb_step_1
 Sending build context to Docker daemon  74.75kB
