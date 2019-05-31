@@ -3,10 +3,7 @@
 
 ## Access to Azure KeyVault and `az login` using Managed Identity
 
-Task Definition [file](https://github.com/shahzzzam/acr-tasks/blob/master/managed-identities.yaml) on GitHub.
-(change this after PR is closed)
-
-Looks like this:
+Task Definition file (managed-identities.yaml)
 
 `managed-identities.yaml`
 ``` yaml
@@ -212,11 +209,12 @@ cf3: digest: sha256:16e796bb40d2b0f78102a3d17f69444db10a6862ef40a771fd069f7cab86
 Run ID: cf3 was successful after 38s
 ```
 
-## Private registry log in using Managed Identities
+## Private registry login using Managed Identities
 
-Task located [here](https://github.com/Azure-Samples/acr-tasks.git#:multipleRegistries) looks like this:
 
 We will use System Identity for this example.
+
+Task:
 
 `testtask.yaml`
 ``` yaml
@@ -230,7 +228,8 @@ steps:
 
 
 ``` sh
-$ az acr task create -n multiple-reg -r myregistry -c https://github.com/Azure-Samples/acr-tasks.git#:multipleRegistries -f testtask.yaml --commit-trigger-enabled false --pull-request-trigger-enabled false --assign-identity [system]
+$ az acr task create -n multiple-reg -r myregistry -c https://github.com/Azure-Samples/acr-tasks.git#:multipleRegistries \
+   -f testtask.yaml --commit-trigger-enabled false --pull-request-trigger-enabled false --assign-identity
 
 {
   "agentConfiguration": {
@@ -378,4 +377,39 @@ cf7: digest: sha256:92c7f9c92844bbbb5d0a101b22f7c2a7949e40f8ea90c8b3bc396879d95e
  
  
 Run ID: cf7 was successful after 32s
+```
+
+## Private registry login using Azure keyvault
+
+Same task and steps can be used as in the above example. 
+
+The only difference here would be adding a Keyvault credential to the task instead of identity. 
+
+For instance, say, you want to use MSI to fetch your username/password from keyvault, you can do this:
+
+```
+// Give MSI access to your keyvault to fetch secrets from:
+$ az keyvault set-policy -n mykeyvault --object-id $principal_id -g $resourcegroup 
+  --secret-permissions get
+
+// Link your credentials to your task
+// Note how you can also add plaintext credentials
+$ az acr task credential add -n multiple-reg -r myregistry 
+  --login-server customregistry1.azurecr.io 
+   -u 'myusername' 
+   -p 'https://mykeyvault.vault.azure.net/secrets/secretpassword' 
+   --use-identity $principal_id
+{
+  "customregistry1.azurecr.io": null
+}
+
+$ az acr task credential add -n multiple-reg -r myregistry 
+    --login-server customregistry2.azurecr.io 
+    -u 'https://mykeyvault.vault.azure.net/secrets/secretusername' 
+    -p 'https://mykeyvault.vault.azure.net/secrets/secretpassword' 
+    --use-identity $principal_id
+{
+  "customregistry1.azurecr.io": null,
+  "customregistry2.azurecr.io": null
+}
 ```
