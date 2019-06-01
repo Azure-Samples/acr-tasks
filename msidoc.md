@@ -30,32 +30,34 @@ In this example, we will work with User defined Identities.
 
 ``` sh
 // Create user assigned identity
-$az identity create -g $rg -n msi_user_identity
+az identity create -g $rg -n msi_user_identity
 // capture principal_id, client_id and id from the response
 
 // Add role assignment to Resource group
-$az role assignment create --role reader -g $rg --assignee $principal_id
+az role assignment create --role reader -g $rg --assignee $principal_id
 
 Give access to KeyVault
-$az keyvault set-policy -n myvault --object-id $principal_id -g $rg --secret-permissions get
+az keyvault set-policy -n myvault --object-id $principal_id -g $rg --secret-permissions get
 
 // Create Task 
-$az acr task create -n msitask -r $reg -c https://github.com/Azure-Samples/acr-tasks.git -f managed-identities.yaml --pull-request-trigger-enabled false --commit-trigger-enabled false --assign-identity $id
+az acr task create -n msitask -r $reg -c https://github.com/Azure-Samples/acr-tasks.git \
+  -f managed-identities.yaml --pull-request-trigger-enabled false --commit-trigger-enabled false \
+  --assign-identity $id
 {
   "agentConfiguration": {
     "cpu": 2
   },
   "creationDate": "2019-05-16T21:38:14.935732+00:00",
   "credentials": null,
-  "id": "/subscriptions/84c559c6-30a0-417c-ba06-8a2253b388c3/resourceGroups/samashahtest-rg/providers/Microsoft.ContainerRegistry/registries/myregistry/tasks/msitask",
+  "id": "/subscriptions/84c559c6-xxxx-xxxx-xxxx-8a2253b388c3/resourceGroups/samashahtest-rg/providers/Microsoft.ContainerRegistry/registries/myregistry/tasks/msitask",
   "identity": {
     "principalId": null,
     "tenantId": null,
     "type": "UserAssigned",
     "userAssignedIdentities": {
-      "/subscriptions/84c559c6-30a0-417c-ba06-8a2253b388c3/resourcegroups/samashahtest-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/msi_user_identity": {
-        "clientId": "594c53aa-96fd-42ef-958c-1a388b58b655",
-        "principalId": "e77f1924-f420-4a3b-920a-fecb89d87df6"
+      "/subscriptions/84c559c6-xxxx-xxxx-xxxx-8a2253b388c3/resourcegroups/samashahtest-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/msi_user_identity": {
+        "clientId": "594c53aa-xxxx-xxxx-xxxx-1a388b58b655",
+        "principalId": "e77f1924-xxxx-xxxx-xxxx-fecb89d87df6"
       }
     }
   },
@@ -93,7 +95,7 @@ $az acr task create -n msitask -r $reg -c https://github.com/Azure-Samples/acr-t
 }
 
 // Run Task
-$az acr task run -n msitask -r $reg --set registryName=$reg
+az acr task run -n msitask -r $reg --set registryName=$reg
 
 Queued a run with ID: cfs
 Waiting for an agent...
@@ -180,11 +182,11 @@ cf3: digest: sha256:16e796bb40d2b0f78102a3d17f69444db10a6862ef40a771fd069f7cab86
 [
   {
     "environmentName": "AzureCloud",
-    "id": "84c559c6-30a0-417c-ba06-8a2253b388c3",
+    "id": "84c559c6-xxxx-xxxx-xxxx-8a2253b388c3",
     "isDefault": true,
     "name": "ACR - TEST",
     "state": "Enabled",
-    "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
+    "tenantId": "72f988bf-xxxx-xxxx-xxxx-2d7cd011db47",
     "user": {
       "assignedIdentityInfo": "MSI",
       "name": "systemAssignedIdentity",
@@ -228,8 +230,9 @@ steps:
 
 
 ``` sh
-$ az acr task create -n multiple-reg -r myregistry -c https://github.com/Azure-Samples/acr-tasks.git#:multipleRegistries \
-   -f testtask.yaml --commit-trigger-enabled false --pull-request-trigger-enabled false --assign-identity
+az acr task create -n multiple-reg -r $reg -c https://github.com/Azure-Samples/acr-tasks.git#:multipleRegistries \
+   -f testtask.yaml --commit-trigger-enabled false --pull-request-trigger-enabled false \
+   --assign-identity
 
 {
   "agentConfiguration": {
@@ -237,10 +240,10 @@ $ az acr task create -n multiple-reg -r myregistry -c https://github.com/Azure-S
   },
   "creationDate": "2019-05-16T22:54:04.620200+00:00",
   "credentials": null,
-  "id": "/subscriptions/84c559c6-30a0-417c-ba06-8a2253b388c3/resourceGroups/samashahtest-rg/providers/Microsoft.ContainerRegistry/registries/myregistry/tasks/multiple-reg",
+  "id": "/subscriptions/84c559c6-xxxx-xxxx-xxxx-8a2253b388c3/resourceGroups/samashahtest-rg/providers/Microsoft.ContainerRegistry/registries/myregistry/tasks/multiple-reg",
   "identity": {
-    "principalId": "575ec7ae-e21e-402d-84ee-a12fd5b20a47",
-    "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
+    "principalId": "575ec7ae-xxxx-xxxx-xxxx-a12fd5b20a47",
+    "tenantId": "72f988bf-xxxx-xxxx-xxxx-2d7cd011db47",
     "type": "SystemAssigned",
     "userAssignedIdentities": null
   },
@@ -279,18 +282,32 @@ $ az acr task create -n multiple-reg -r myregistry -c https://github.com/Azure-S
 
 // Capture id and principal_id from response.
 
-$ az acr task credential add -n multiple-reg -r myregistry --login-server customregistry1.azurecr.io --use-identity $principal_id
+az role assignment create --assignee $principal_id \
+  --scope '/subscriptions/f9d7ebed-xxxx-xxxx-xxxx-aaf82c136138/resourceGroups/$rg/providers/Microsoft.ContainerRegistry/registries/customregistry1' \
+  --role acrpush
+
+az role assignment create --assignee $principal_id \
+  --scope '/subscriptions/f9d7ebed-xxxx-xxxx-xxxx-aaf82c136138/resourceGroups/$rg/providers/Microsoft.ContainerRegistry/registries/customregistry2' \
+  --role acrpush
+
+az acr task credential add -n multiple-reg -r $reg \
+  --login-server customregistry1.azurecr.io \
+  --use-identity [system]
 {
   "customregistry1.azurecr.io": null
 }
 
-$ az acr task credential add -n multiple-reg -r myregistry --login-server customregistry2.azurecr.io --use-identity $principal_id
+az acr task credential add -n multiple-reg -r myregistry \
+  --login-server customregistry2.azurecr.io \
+  --use-identity [system]
 {
   "customregistry1.azurecr.io": null,
   "customregistry2.azurecr.io": null
 }
 
-$ az acr task run -n multiple-reg -r myregistry --set REGISTRY1=customregistry1.azurecr.io --set REGISTRY2=customregistry2.azurecr.io
+az acr task run -n multiple-reg -r $reg \
+  --set REGISTRY1=customregistry1.azurecr.io \
+  --set REGISTRY2=customregistry2.azurecr.io
 Queued a run with ID: cf7
 Waiting for an agent...
 2019/05/16 23:09:25 Downloading source code...
@@ -389,25 +406,25 @@ For instance, say, you want to use MSI to fetch your username/password from keyv
 
 ```
 // Give MSI access to your keyvault to fetch secrets from:
-$ az keyvault set-policy -n mykeyvault --object-id $principal_id -g $resourcegroup 
+az keyvault set-policy -n mykeyvault --object-id $principal_id -g $rg \
   --secret-permissions get
 
 // Link your credentials to your task
 // Note how you can also add plaintext credentials
-$ az acr task credential add -n multiple-reg -r myregistry 
-  --login-server customregistry1.azurecr.io 
-   -u 'myusername' 
-   -p 'https://mykeyvault.vault.azure.net/secrets/secretpassword' 
-   --use-identity $principal_id
+az acr task credential add -n multiple-reg -r $reg \
+  --login-server customregistry1.azurecr.io \
+   -u 'myusername' \
+   -p 'https://mykeyvault.vault.azure.net/secrets/secretpassword' \
+   --use-identity [system]
 {
   "customregistry1.azurecr.io": null
 }
 
-$ az acr task credential add -n multiple-reg -r myregistry 
-    --login-server customregistry2.azurecr.io 
-    -u 'https://mykeyvault.vault.azure.net/secrets/secretusername' 
-    -p 'https://mykeyvault.vault.azure.net/secrets/secretpassword' 
-    --use-identity $principal_id
+az acr task credential add -n multiple-reg -r myregistry 
+    --login-server customregistry2.azurecr.io \
+    -u 'https://mykeyvault.vault.azure.net/secrets/secretusername' \
+    -p 'https://mykeyvault.vault.azure.net/secrets/secretpassword' \
+    --use-identity [system]
 {
   "customregistry1.azurecr.io": null,
   "customregistry2.azurecr.io": null
