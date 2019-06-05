@@ -49,15 +49,15 @@ az acr task create -n msitask -r $reg -c https://github.com/Azure-Samples/acr-ta
   },
   "creationDate": "2019-05-16T21:38:14.935732+00:00",
   "credentials": null,
-  "id": "/subscriptions/84c559c6-xxxx-xxxx-xxxx-8a2253b388c3/resourceGroups/samashahtest-rg/providers/Microsoft.ContainerRegistry/registries/myregistry/tasks/msitask",
+  "id": "/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/samashahtest-rg/providers/Microsoft.ContainerRegistry/registries/myregistry/tasks/msitask",
   "identity": {
     "principalId": null,
     "tenantId": null,
     "type": "UserAssigned",
     "userAssignedIdentities": {
-      "/subscriptions/84c559c6-xxxx-xxxx-xxxx-8a2253b388c3/resourcegroups/samashahtest-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/msi_user_identity": {
-        "clientId": "594c53aa-xxxx-xxxx-xxxx-1a388b58b655",
-        "principalId": "e77f1924-xxxx-xxxx-xxxx-fecb89d87df6"
+      "/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourcegroups/samashahtest-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/msi_user_identity": {
+        "clientId": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+        "principalId": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
       }
     }
   },
@@ -182,11 +182,11 @@ cf3: digest: sha256:16e796bb40d2b0f78102a3d17f69444db10a6862ef40a771fd069f7cab86
 [
   {
     "environmentName": "AzureCloud",
-    "id": "84c559c6-xxxx-xxxx-xxxx-8a2253b388c3",
+    "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
     "isDefault": true,
     "name": "ACR - TEST",
     "state": "Enabled",
-    "tenantId": "72f988bf-xxxx-xxxx-xxxx-2d7cd011db47",
+    "tenantId": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
     "user": {
       "assignedIdentityInfo": "MSI",
       "name": "systemAssignedIdentity",
@@ -240,10 +240,10 @@ az acr task create -n multiple-reg -r $reg -c https://github.com/Azure-Samples/a
   },
   "creationDate": "2019-05-16T22:54:04.620200+00:00",
   "credentials": null,
-  "id": "/subscriptions/84c559c6-xxxx-xxxx-xxxx-8a2253b388c3/resourceGroups/samashahtest-rg/providers/Microsoft.ContainerRegistry/registries/myregistry/tasks/multiple-reg",
+  "id": "/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/samashahtest-rg/providers/Microsoft.ContainerRegistry/registries/myregistry/tasks/multiple-reg",
   "identity": {
-    "principalId": "575ec7ae-xxxx-xxxx-xxxx-a12fd5b20a47",
-    "tenantId": "72f988bf-xxxx-xxxx-xxxx-2d7cd011db47",
+    "principalId": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+    "tenantId": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
     "type": "SystemAssigned",
     "userAssignedIdentities": null
   },
@@ -283,11 +283,11 @@ az acr task create -n multiple-reg -r $reg -c https://github.com/Azure-Samples/a
 // Capture id and principal_id from response.
 
 az role assignment create --assignee $principal_id \
-  --scope '/subscriptions/f9d7ebed-xxxx-xxxx-xxxx-aaf82c136138/resourceGroups/$rg/providers/Microsoft.ContainerRegistry/registries/customregistry1' \
+  --scope '/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/$rg/providers/Microsoft.ContainerRegistry/registries/customregistry1' \
   --role acrpush
 
 az role assignment create --assignee $principal_id \
-  --scope '/subscriptions/f9d7ebed-xxxx-xxxx-xxxx-aaf82c136138/resourceGroups/$rg/providers/Microsoft.ContainerRegistry/registries/customregistry2' \
+  --scope '/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/$rg/providers/Microsoft.ContainerRegistry/registries/customregistry2' \
   --role acrpush
 
 az acr task credential add -n multiple-reg -r $reg \
