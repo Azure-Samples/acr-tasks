@@ -1,3 +1,11 @@
+---
+topic: sample
+languages:
+  - yaml
+products:
+  - azure-container-registry
+---
+
 # ACR Tasks samples
 
 A collection of example `task.yaml` files for [ACR Tasks](https://aka.ms/acr/tasks).
