@@ -1,0 +1,37 @@
+ARG WINDOWS_VERSION
+FROM samashahtest.azurecr.io/windowsservercore:1809
+
+ARG VERSION
+
+LABEL com.logeto.name="web"
+LABEL com.logeto.version=${VERSION}
+
+SHELL ["powershell", "-command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
+
+RUN $url='https://systemartreleases.blob.core.windows.net/releases/7_6_38_1368/ServerWeb-7_6_38_1368.zip?st=2019-02-12T19%3A40%3A02Z&se=2039-02-13T19%3A40%3A00Z&sp=rl&sv=2018-03-28&sr=c&sig=wOwyBA8UNFdE6%2Fav9H%2BG8ejTebO%2Byn7md%2BqFjVifplE%3D' ; \
+	Invoke-WebRequest -UseBasicParsing -Uri $url -Out 'ServerWeb.zip' ; \
+	Expand-Archive -Path 'ServerWeb.zip' -DestinationPath 'Logeto' -Force; \
+	Remove-Item -Path 'ServerWeb.zip' -Recurse -Force
+
+RUN $url='https://systemartcontainers.blob.core.windows.net/configurations/7_6_38_1368/ContainerConfigurations-7_6_38_1368.zip?st=2019-05-04T08%3A52%3A44Z&se=2039-05-05T08%3A52%3A00Z&sp=rl&sv=2018-03-28&sr=c&sig=f5ldyMZ62Vn3b%2BFPH5eLD5XxjPf6%2FWjzAqjp8C6wMZA%3D' ; \
+	Invoke-WebRequest -UseBasicParsing -Uri $url -Out 'ContainerConfigurations.zip' ; \
+	Expand-Archive -Path 'ContainerConfigurations.zip' -DestinationPath 'ContainerConfigurations' -Force; \
+	Copy-Item 'ContainerConfigurations\Set-Configuration.ps1' 'Set-Configuration.ps1' ; \
+	Remove-Item -Path 'ContainerConfigurations' -Recurse -Force
+
+RUN Import-Module WebAdministration ; \
+	Remove-WebSite -Name 'Default Web Site' ; \
+	New-WebAppPool -Name 'Logeto' ; \
+	New-Website -Name 'Logeto' -Port 80 -ApplicationPool 'Logeto' -PhysicalPath 'C:\Logeto' ; \
+	icacls 'Windows\Temp' /grant 'IIS AppPool\Logeto:(OI)(CI)F' /T
+
+RUN New-IISSiteBinding -Name "Logeto" -BindingInformation "*:443:*.vykazprace.sk" -Protocol https -SslFlag 3 ; \
+	New-IISSiteBinding -Name "Logeto" -BindingInformation "*:443:*.vykazprace.cz" -Protocol https -SslFlag 3 ; \
+	New-IISSiteBinding -Name "Logeto" -BindingInformation "*:443:*.logeto.com" -Protocol https -SslFlag 3
+
+RUN Import-Module WebAdministration; \
+	Set-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST' -filter 'system.applicationHost/sites/site[@name=''Logeto'']/traceFailedRequestsLogging' -name 'enabled' -value 'True' ; \
+	Set-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST' -filter 'system.applicationHost/sites/site[@name=''Logeto'']/traceFailedRequestsLogging' -name 'directory' -value 'C:\Containers Data\Logs\FailedReqLogFiles'
+
+ENTRYPOINT ./Set-Configuration.ps1 ; \
+	C:\ServiceMonitor.exe w3svc	
