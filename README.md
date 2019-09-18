@@ -1,3 +1,14 @@
+---
+page_type: sample
+languages:
+- 
+products:
+- azure
+description: "A collection of example task.yaml files for ACR Tasks."
+urlFragment: acr-tasks
+---
+
+
 # ACR Tasks samples
 
 A collection of example `task.yaml` files for [ACR Tasks](https://aka.ms/acr/tasks).
