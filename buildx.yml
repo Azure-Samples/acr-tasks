@@ -1,5 +1,6 @@
-version: v1.0.0
+version: v1.1.0
 steps:
-  - build: -t {{.Run.Registry}}/hello-world:{{.Run.ID}} -f hello-world.dockerfile .
+  - build: -t $Registry/hello-world:$ID -f hello-world.dockerfile .
     cache: enabled
-  - push: ["{{.Run.Registry}}/hello-world:{{.Run.ID}}"]
+  - push: 
+    - "$Registry/hello-world:$ID"

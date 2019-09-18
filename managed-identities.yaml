@@ -1,4 +1,7 @@
-version: v1.0.0
+version: v1.1.0
+alias: 
+  values:
+    repo: my-website
 secrets:
   - id: name
     keyvault: https://myacbvault2.vault.azure.net/secrets/SampleSecret
@@ -8,10 +11,10 @@ steps:
       - MY_SECRET='{{.Secrets.name}}' 
 
   # Build/Push the website to source registry
-  - cmd: docker build -t {{.Run.Registry}}/my-website:{{.Run.ID}} https://github.com/Azure-Samples/aci-helloworld.git
+  - cmd: docker build -t $Registry/repo:$ID https://github.com/Azure-Samples/aci-helloworld.git
   - push: 
-    - "{{.Run.Registry}}/my-website:{{.Run.ID}}"
+    - "$Registry/repo:$ID"
   
   # Login to Azure and list the tags to verify if we have the Image!
-  - cmd: microsoft/azure-cli az login --identity
-  - cmd: microsoft/azure-cli az acr repository show-tags -n {{.Values.registryName}} --repository my-website
+  - cmd: az login --identity
+  - cmd: az acr repository show-tags -n {{.Values.registryName}} --repository repo

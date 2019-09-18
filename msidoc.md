@@ -7,23 +7,26 @@ Task Definition file (managed-identities.yaml)
 
 `managed-identities.yaml`
 ``` yaml
-version: v1.0.0
+version: v1.1.0
+alias: 
+  values:
+    repo: my-website
 secrets:
   - id: name
-    keyvault: https://myvault.vault.azure.net/secrets/SampleSecret
+    keyvault: https://myacbvault2.vault.azure.net/secrets/SampleSecret
 steps:
-  - cmd: bash -c 'if [ -z "$MY_SECRET" ]; then echo "Secret not resolved"; else echo "Secret resolved!!"; fi'
+  - cmd: bash -c 'if [ -z "$MY_SECRET" ]; then echo "Secret not resolved"; else echo "Secret resolved"; fi'
     env: 
       - MY_SECRET='{{.Secrets.name}}' 
 
   # Build/Push the website to source registry
-  - cmd: docker build -t {{.Run.Registry}}/my-website:{{.Run.ID}} https://github.com/Azure-Samples/aci-helloworld.git
+  - cmd: docker build -t $Registry/repo:$ID https://github.com/Azure-Samples/aci-helloworld.git
   - push: 
-    - "{{.Run.Registry}}/my-website:{{.Run.ID}}"
+    - "$Registry/repo:$ID"
   
   # Login to Azure and list the tags to verify if we have the Image!
-  - cmd: microsoft/azure-cli az login --identity
-  - cmd: microsoft/azure-cli az acr repository show-tags -n {{.Values.registryName}} --repository my-website
+  - cmd: az login --identity
+  - cmd: az acr repository show-tags -n {{.Values.registryName}} --repository repo
 ```
 
 In this example, we will work with User defined Identities.
@@ -220,12 +223,12 @@ Task:
 
 `testtask.yaml`
 ``` yaml
-version: v1.0.0
+version: v1.1.0
 steps:
-  - build: -t {{.Values.REGISTRY1}}/hello-world:{{.Run.ID}} . -f hello-world.dockerfile
-  - push: ["{{.Values.REGISTRY1}}/hello-world:{{.Run.ID}}"]
-  - build: -t {{.Values.REGISTRY2}}/hello-world:{{.Run.ID}} . -f hello-world.dockerfile
-  - push: ["{{.Values.REGISTRY2}}/hello-world:{{.Run.ID}}"]
+  - build: -t {{.Values.REGISTRY1}}/hello-world:$ID . -f hello-world.dockerfile
+  - push: ["{{.Values.REGISTRY1}}/hello-world:$ID"]
+  - build: -t {{.Values.REGISTRY2}}/hello-world:$ID . -f hello-world.dockerfile
+  - push: ["{{.Values.REGISTRY2}}/hello-world:$ID"]
 ```
 
 
