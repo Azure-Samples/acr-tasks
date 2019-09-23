@@ -1,11 +1,11 @@
 ---
 page_type: sample
 languages:
-- 
+- yaml
 products:
 - azure
 description: "A collection of example task.yaml files for ACR Tasks."
-urlFragment: acr-tasks
+urlFragment: yaml-samples-acr
 ---
 
 
