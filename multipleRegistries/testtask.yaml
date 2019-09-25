@@ -1,6 +1,6 @@
-version: v1.1.0
+version: v1.0.0
 steps:
-  - build: -t {{.Values.REGISTRY1}}/hello-world:$ID . -f hello-world.dockerfile
-  - push: ["{{.Values.REGISTRY1}}/hello-world:$ID"]
-  - build: -t {{.Values.REGISTRY2}}/hello-world:$ID . -f hello-world.dockerfile
-  - push: ["{{.Values.REGISTRY2}}/hello-world:$ID"]
+  - build: -t {{.Values.REGISTRY1}}/hello-world:{{.Run.ID}} . -f hello-world.dockerfile
+  - push: ["{{.Values.REGISTRY1}}/hello-world:{{.Run.ID}}"]
+  - build: -t {{.Values.REGISTRY2}}/hello-world:{{.Run.ID}} . -f hello-world.dockerfile
+  - push: ["{{.Values.REGISTRY2}}/hello-world:{{.Run.ID}}"]
