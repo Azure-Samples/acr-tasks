@@ -1,6 +1,0 @@
-version: v1.1.0
-steps:
-  - build: -t $Registry/hello-world:$ID -f hello-world.dockerfile .
-    cache: enabled
-  - push: 
-    - "$Registry/hello-world:$ID"
