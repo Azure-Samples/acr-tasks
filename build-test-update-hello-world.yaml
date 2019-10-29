@@ -1,22 +1,22 @@
-version: v1.0.0
+version: v1.1.0
 steps:
   # build website and func-test images, concurrently
-  - build: -t {{.Run.Registry}}/hello-world:{{.Run.ID}} -f hello-world.dockerfile .
+  - build: -t $Registry/hello-world:$ID -f hello-world.dockerfile .
     when: ["-"]
   - build: -t hello-world-test  -f hello-world.dockerfile  .
     when: ["-"]
   # run built images to be tested
   - id: hello-world
-    cmd: {{.Run.Registry}}/hello-world:{{.Run.ID}}
+    cmd: $Registry/hello-world:$ID
   - id: func-tests
     cmd: hello-world-test
     env:
       - test-target=hello-world
   # push hello-world if func-tests are successful  
   - push: 
-    - {{.Run.Registry}}/hello-world:{{.Run.ID}}
+    - $Registry/hello-world:$ID
   # helm deploy the updated hello-world image
   - cmd: >
       cmd.azurecr.io/helm:v2.11.0-rc.2 update helloworld ./release/helm/ 
       --reuse-values 
-      --set helloworld.image={{.Run.Registry}}/hello-world:{{.Run.ID}}
+      --set helloworld.image=$Registry/hello-world:$ID

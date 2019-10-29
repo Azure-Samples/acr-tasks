@@ -1,15 +1,15 @@
-version: v1.0.0
+version: v1.1.0
 steps:
   # build website and func-test images, concurrently
   - id: build-hello-world
-    build: -t {{.Run.Registry}}/hello-world:{{.Run.ID}} -f hello-world.dockerfile .
+    build: -t $Registry/hello-world:$ID -f hello-world.dockerfile .
     when: ["-"]
   - id: build-hello-world-test
     build: -t hello-world-test -f hello-world.dockerfile .
     when: ["-"]
   # run built images to be tested
   - id: hello-world
-    cmd: {{.Run.Registry}}/hello-world:{{.Run.ID}}
+    cmd: $Registry/hello-world:$ID
     when: ["build-hello-world"]
   - id: func-tests
     cmd: hello-world-test
