@@ -1,6 +1,6 @@
-version: v1.0.0
+version: v1.1.0
 steps:
-  - build: -t {{.Run.Registry}}/hello-world:{{.Run.ID}} -f hello-world.dockerfile .
+  - build: -t $Registry/hello-world:$ID -f hello-world.dockerfile .
   - push:
-    - {{.Run.Registry}}/hello-world:{{.Run.ID}}
-  - cmd: {{.Run.Registry}}/hello-world:{{.Run.ID}}
+    - $Registry/hello-world:$ID
+  - cmd: $Registry/hello-world:$ID
