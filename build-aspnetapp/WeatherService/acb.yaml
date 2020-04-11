@@ -1,0 +1,11 @@
+version: v1.1.0
+steps:
+ - cmd: docker pull $Registry/dotnet/core/aspnet:3.1-buster-slim
+   retries: 3
+   retryDelay: 5
+ - cmd: docker pull $Registry/dotnet/core/sdk:3.1-buster
+   retries: 3
+   retryDelay: 5
+ - build: -f Dockerfile -t $Registry/weatherservice:$ID --build-arg BaseImage=$Registry/dotnet/core/aspnet:3.1-buster-slim --build-arg BuildImage=$Registry/dotnet/core/sdk:3.1-buster .
+ - push: 
+    - $Registry/weatherservice:$ID
