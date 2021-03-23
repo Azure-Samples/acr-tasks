@@ -1,6 +1,6 @@
 version: v1.1.0
 steps:
   - id: nginx
-    cmd: nginx
+    cmd: mcr.microsoft.com/oss/nginx/nginx:1.15.5-alpine
     detach: true
   - cmd: curl --url http://nginx

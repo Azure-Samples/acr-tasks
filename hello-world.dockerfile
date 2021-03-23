@@ -1,1 +1,1 @@
-FROM hello-world
+FROM mcr.microsoft.com/hello-world
