@@ -1,0 +1,8 @@
+version: v1.1.0
+steps: 
+  - id: write-file
+    cmd: bash -c 'echo $(date) >> hello.txt'
+  - id: read-file
+    cmd: bash cat hello.txt
+  - id: list-workspace-files
+    cmd: bash ls -l 
